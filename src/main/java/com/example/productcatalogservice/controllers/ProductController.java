@@ -1,6 +1,10 @@
 package com.example.productcatalogservice.controllers;
 
 import com.example.productcatalogservice.dtos.ProductDto;
+import com.example.productcatalogservice.models.Product;
+import com.example.productcatalogservice.services.IProductService;
+import com.example.productcatalogservice.services.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -9,6 +13,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
+
+    @Autowired
+    private IProductService productService;    // Field Injection
+
+//    public ProductService(IProductService productService)   Constructor Injection
+//    {
+//        this.productService = productService;
+//    }
 
     @GetMapping
     public List<ProductDto> getAllProducts() {
@@ -23,10 +35,14 @@ public class ProductController {
     @GetMapping("{id}")
     public ProductDto getProductById(@PathVariable("id") Long productId)
     {
-      ProductDto productDto = new ProductDto();
-      productDto.setId(productId);
-      productDto.setName("Macbook Pro");
-      return productDto;
+//      ProductDto productDto = new ProductDto();
+//      productDto.setId(productId);
+//      productDto.setName("Macbook Pro");
+//      return productDto;
+
+        Product product = productService.getProductById();
+
+        return null;
     }
 
     @PostMapping
