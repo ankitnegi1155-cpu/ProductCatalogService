@@ -2,6 +2,7 @@ package com.example.productcatalogservice.controllers;
 
 import com.example.productcatalogservice.dtos.CategoryDto;
 import com.example.productcatalogservice.dtos.ProductDto;
+import com.example.productcatalogservice.models.Category;
 import com.example.productcatalogservice.models.Product;
 import com.example.productcatalogservice.services.IProductService;
 import com.example.productcatalogservice.services.ProductService;
@@ -66,10 +67,20 @@ public class ProductController {
         return productDto;
     }
 
-    @PatchMapping("{id}")
-    public ProductDto updatedProductPartially(@PathVariable("id") Long productId,@RequestBody ProductDto productDto)
+    @PutMapping("{id}")
+    public ResponseEntity<ProductDto> replaceProduct(@PathVariable("id") Long productId,@RequestBody ProductDto productDto)
     {
-       return productDto;
+        if(productId <= 0)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Product inputProduct = from(productDto);
+        Product outputProduct = productService.replaceProduct(productId,inputProduct);
+        if(outputProduct == null)
+        {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+       return new ResponseEntity<>(from(outputProduct), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
@@ -96,6 +107,26 @@ public class ProductController {
         }
 
         return productDto;
+    }
+
+    private Product from(ProductDto productDto)
+    {
+        Product product = new Product();
+        product.setId(productDto.getId());
+        product.setName(productDto.getName());
+        product.setPrice(productDto.getPrice());
+        product.setDescription(productDto.getDescription());
+        product.setImageUrl(productDto.getImageUrl());
+        if(productDto.getCategory() != null)
+        {
+            Category category = new Category();
+            category.setId(productDto.getCategory().getId());
+            category.setName(productDto.getCategory().getName());
+            category.setDescription(productDto.getCategory().getDescription());
+            product.setCategory(category);
+        }
+
+        return product;
     }
 
 
