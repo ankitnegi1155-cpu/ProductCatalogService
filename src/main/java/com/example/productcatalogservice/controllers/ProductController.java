@@ -47,13 +47,14 @@ public class ProductController {
 
         if(productId <= 0)
         {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new IllegalArgumentException("Pass positive product id");
         }
 
         Product product = productService.getProductById(productId);
         if(product == null)
         {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new NullPointerException("Product not found");
         }
 
         ProductDto productDto = from(product);
