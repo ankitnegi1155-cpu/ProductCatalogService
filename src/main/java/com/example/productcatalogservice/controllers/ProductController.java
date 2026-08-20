@@ -7,6 +7,7 @@ import com.example.productcatalogservice.models.Product;
 import com.example.productcatalogservice.services.IProductService;
 import com.example.productcatalogservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
+//    @Qualifier("fkps")                   // Injection using Qualifier
     private IProductService productService;    // Field Injection
 
 //    public ProductService(IProductService productService)   Constructor Injection
