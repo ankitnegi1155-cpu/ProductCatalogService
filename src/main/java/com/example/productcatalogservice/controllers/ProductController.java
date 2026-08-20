@@ -31,11 +31,13 @@ public class ProductController {
 
     @GetMapping
     public List<ProductDto> getAllProducts() {
-        ProductDto productDto = new ProductDto();
-        productDto.setId(2L);
-        productDto.setName("Iphone");
+        List<Product> products = productService.getAllProducts();
         List<ProductDto> productDtos = new ArrayList<>();
-        productDtos.add(productDto);
+        for(Product product : products) {
+            ProductDto productDto = from(product);
+            productDtos.add(productDto);
+        }
+
         return productDtos;
     }
 
@@ -67,7 +69,10 @@ public class ProductController {
     @PostMapping
     public ProductDto createProduct(@RequestBody ProductDto productDto)
     {
-        return productDto;
+
+        Product inputProduct = from(productDto);
+        Product outputProduct = productService.createProduct(inputProduct);
+        return from(outputProduct);
     }
 
     @PutMapping("{id}")
@@ -89,7 +94,8 @@ public class ProductController {
     @DeleteMapping("{id}")
     public String deletedProductById(@PathVariable("id") Long productId)
     {
-        return "Product with " + productId + " deleted successfully";
+        productService.deleteProduct(productId);
+        return "Product with id " + productId + " deleted successfully";
     }
 
     private ProductDto from(Product product)

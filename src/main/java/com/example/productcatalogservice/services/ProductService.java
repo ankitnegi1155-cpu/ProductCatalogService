@@ -67,6 +67,11 @@ public class ProductService implements IProductService {
         return null;
     }
 
+    @Override
+    public void deleteProduct(Long id) {
+
+    }
+
     private boolean validateFakeStoreResponse(ResponseEntity<FakeStoreProductDto> fakeStoreProductDtoResponseEntity) {
         if(fakeStoreProductDtoResponseEntity.hasBody() && fakeStoreProductDtoResponseEntity.getStatusCode().is2xxSuccessful()) {
             return true;

@@ -20,5 +20,11 @@ public class ControllerAdvisor {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(Exception exception)
+    {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
 
 }
