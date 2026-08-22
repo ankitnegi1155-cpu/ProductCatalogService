@@ -58,7 +58,8 @@ public class ProductController {
         Product product = productService.getProductById(productId);
         if(product == null)
         {
-            throw new NullPointerException("Product not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            throw new NullPointerException("Product not found");
         }
 
         ProductDto productDto = from(product);
@@ -69,7 +70,6 @@ public class ProductController {
     @PostMapping
     public ProductDto createProduct(@RequestBody ProductDto productDto)
     {
-
         Product inputProduct = from(productDto);
         Product outputProduct = productService.createProduct(inputProduct);
         return from(outputProduct);
