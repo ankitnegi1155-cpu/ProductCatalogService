@@ -39,7 +39,6 @@ public class StorageProductService implements IProductService {
         if(productOptional.isPresent()) {
             throw new RuntimeException("Product already exists with id: " + product.getId());
         }
-
         return productRepo.save(product);
     }
 

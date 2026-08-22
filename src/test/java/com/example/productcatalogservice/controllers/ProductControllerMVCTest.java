@@ -6,12 +6,14 @@ import com.example.productcatalogservice.services.IProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -49,6 +51,25 @@ public class ProductControllerMVCTest {
         mockMvc.perform(get("/products/2")) // Act
                 .andExpect(status().isOk())           // Assert
                 .andExpect(content().string(expectedResponse));   // assertEquals(expectedResponse, received response converted into string
+    }
+
+    @Test
+    public void TestCreateProductAPI_WithNewProduct_ReturnsResponseSuccessfully() throws Exception {
+        //Arrange
+        Product product = new Product();
+        product.setId(2L);
+        product.setName("Iphone");
+
+        ProductDto productDto = new ProductDto();
+        productDto.setId(2L);
+        productDto.setName("Iphone");
+
+        when(productService.createProduct(any(Product.class))).thenReturn(product);
+        String expectedResponse = objectMapper.writeValueAsString(productDto);
+
+        //Act and Assert
+        mockMvc.perform(post("/products").contentType(MediaType.APPLICATION_JSON).content(expectedResponse))
+                .andExpect(content().string(expectedResponse));
     }
 
 }

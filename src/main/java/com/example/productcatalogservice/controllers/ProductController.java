@@ -71,6 +71,7 @@ public class ProductController {
     public ProductDto createProduct(@RequestBody ProductDto productDto)
     {
         Product inputProduct = from(productDto);
+
         Product outputProduct = productService.createProduct(inputProduct);
         return from(outputProduct);
     }
